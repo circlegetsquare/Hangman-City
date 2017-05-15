@@ -1,0 +1,37 @@
+/* global styles */
+
+* {
+	box-sizing: border-box;
+	
+}
+
+body {
+	font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+	color: #303030;
+}
+
+h1 {
+	font-size: 32px;
+	line-height: 50px;
+}
+
+h2 {
+	font-size: 24px;
+	line-height: 36px;
+}
+
+p {
+	font-size: 16px;
+	line-height: 32px;
+}
+
+.container {
+	margin: 0 auto;
+
+}
+.game-element {
+	margin-bottom: 20px;
+	border: 1px solid;
+	padding: 10px;
+
+}

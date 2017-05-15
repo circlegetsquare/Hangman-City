@@ -3,14 +3,19 @@
   <head>
     <meta charset="UTF-8">
     <title>Hangman Game -- Joshua Miller</title>
+    <link href="assets/css/reset.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
   </head>
   
   <body>
-    <h1>Let's Play Hangman/h1>
+    <div class="container"><h1>Let's Play Hangman!</h1>
     <h2>Type any key to begin</h2>
-    <div id="wins"></div>
-    <div id="losses"></div>
-    <div id="ties"></div>
+    <div class="game-element" id="wins"><p>Wins go here</p></div>
+    <div class="game-element" id="current-word"><p>Current work in play goes here</p></div>
+    <div class="game-element" id="guesses-remaining"><p># guesses remaining goes here</p></div>
+    <div class="game-element" id="letters-guessed"><p>Letters guessed go here</p></div>
+    </div>
+    <script src="assets/javascript/game.js"></script>
   </body>
-  <script src="assets/javascript/game.js"></script>
 </html>
+
