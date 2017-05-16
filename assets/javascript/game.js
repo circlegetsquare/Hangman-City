@@ -4,8 +4,8 @@
 // Game Object
 
 	var game = {
-		guessArray: [],
-		guessDisplay: "",
+		letterGuessArray: [],
+		letterGuessDisplay: "",
 		wordsArray: ["doggie", "cat"],
 		gameStatus: false,
 		wordToGuess: "",
@@ -14,17 +14,19 @@
 		letterCount: 0,
 		remainingGuesses: 15,
 		htmlGuessDisplay: "",
+		userChoice: "",
+		underscoreGuessArray: [],
 
 	}
 
 
 // Listening to user keystrokes
 	document.onkeyup = function(e) {
-		var userChoice = e.key;
-		console.log(userChoice);
+		game.userChoice = e.key;
+		console.log(game.userChoice);
 
 	// Game starts if user hits spacebar
-		if (userChoice === "s") {
+		if (game.userChoice === "s") {
 			game.gameStatus = true;
 			console.log(game.gameStatus);
 			
@@ -47,10 +49,13 @@
 		// Converts chosen word into an array
 			game.wordToGuessArray = Array.from(game.wordToGuess);
 
-		// turns array into underscores for display
+		// turns wordToGuess array into new array of same length populated with underscores
 			for (var i = 0; i < game.wordToGuessArray.length; i++) {
-				game.htmlGuessDisplay = game.htmlGuessDisplay + "_ ";
+				game.underscoreGuessArray[i] = "_";
 			}
+
+		// Turns underscoreGuessArray into a single variable with spaces between each underscore for HTML display, then adds HTML and injects
+			game.htmlGuessDisplay = game.underscoreGuessArray.join(" ");
 			game.htmlGuessDisplay = "<p>" + game.htmlGuessDisplay + "</p>";
 			document.querySelector("#word-to-guess").innerHTML = game.htmlGuessDisplay;
 
@@ -58,33 +63,46 @@
 	// Once game starts, listening to user keystroke; checks against existing values in guessArray
 		
 			document.onkeyup = function(e) {
-				var userChoice = e.key;
+				game.userChoice = e.key;
 
 			// If keystroke is isn't already present in guessArray it is added and then parsed to display without commas
-				if (game.guessArray.indexOf(userChoice) === -1) {
-				    game.guessArray.push(e.key);
-				    game.guessDisplay = game.guessArray.join(" ");
+				if (game.letterGuessArray.indexOf(game.userChoice) === -1) {
+				    game.letterGuessArray.push(e.key);
+				    game.letterGuessDisplay = game.letterGuessArray.join(" ");
 
 				// Keystroke guesses are injected back into HTML
-				    var htmlGuess = "<p>You chose: " + game.guessDisplay + "</p>";
-				    document.querySelector("#letters-guessed").innerHTML = htmlGuess;
+				    var htmlLettersGuessed = "<p>You chose: " + game.letterGuessDisplay + "</p>";
+				    document.querySelector("#letters-guessed").innerHTML = htmlLettersGuessed;
 
 				// Keystroke is checked against wordToGuessArray, if it does not exist the # Remaining guesses counter moves down
-				if (game.wordToGuessArray.indexOf(userChoice) === -1) {
+				if (game.wordToGuessArray.indexOf(game.userChoice) === -1) {
 						game.remainingGuesses--;
-						var htmlGuessNum = "Remaining guesses: "+ game.remainingGuesses;
+						var htmlGuessNum = "<p>Remaining guesses: "+ game.remainingGuesses + "</p>";
 						document.querySelector("#guesses-remaining").innerHTML = htmlGuessNum;
-
 				}
 
-				// If the keystroke does exist in wordToGuessArray the underscore in the wordToGuessArray is replaced with the letter
-				else {
+				// Iterate through letters guessed and change each that is found in the wordToGuessArray from an underscore to a letter in
+				
+				for (var i = 0; i < game.wordToGuessArray.length; i++) {
+					if (game.letterGuessArray.indexOf(game.wordToGuessArray[i]) === -1) {
+						game.underscoreGuessArray[i] = "_";
+					}
+					else {
+						game.underscoreGuessArray[i] = game.wordToGuessArray[i];
+						}
+					}
+					game.htmlGuessDisplay = game.underscoreGuessArray.join(" ");
+					game.htmlGuessDisplay = "<p>" + game.htmlGuessDisplay + "</p>";
+					document.querySelector("#word-to-guess").innerHTML = game.htmlGuessDisplay;
+					console.log(game.htmlGuessDisplay)
+
+					}
 
 				}
 			}
 		}
-	}
-}
+	
+
 
 
 
