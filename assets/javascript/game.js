@@ -11,14 +11,52 @@
 		wordToGuess: "",
 		wordToGuessArray: [],
 		winCount: 0,
-		letterCount: 0,
-		remainingGuesses: 15,
+		lossCount: 0,
+		remainingGuesses: 0,
 		htmlGuessDisplay: "",
 		userChoice: "",
 		underscoreGuessArray: [],
 
-	}
+		resetRemainingGuesses: function (){
+			this.remainingGuesses=8;
+			var htmlGuessNum = "<p>Remaining guesses: "+ this.remainingGuesses + "</p>";
+			document.querySelector("#guesses-remaining").innerHTML = htmlGuessNum;
+		},
 
+		setWinsLosses: function(){
+			var htmlWinNum = "<p>Number of wins: "+ this.winCount + "</p>";
+			document.querySelector("#wins").innerHTML = htmlWinNum;
+			var htmlLossNum = "<p>Number of losses: "+ this.lossCount + "</p>";
+			document.querySelector("#losses").innerHTML = htmlLossNum;
+		},
+
+		chooseRandGuessWord: function(){
+			game.wordToGuess = this.wordsArray[Math.floor(Math.random() * game.wordsArray.length)];
+			console.log(game.wordToGuess);
+		},
+
+		resetCommand: function(){
+			this.remainingGuesses=8;
+			var htmlCommand = "<span>Guess a letter to solve the puzzle</span>";
+			document.querySelector("#user-command").innerHTML = htmlCommand;
+		},
+
+		playAgainCommand: function(){
+			this.remainingGuesses=8;
+			var htmlCommand = "<span>Hit 'S' to play again!</span>";
+			document.querySelector("#user-command").innerHTML = htmlCommand;
+		},
+
+		youWin: function(){
+			var htmlHeader = "<span>You Win!</span>";
+			document.querySelector("#header").innerHTML = htmlHeader;
+		},
+
+		youLose: function(){
+			var htmlHeader = "<span>You Lose!</span>";
+			document.querySelector("#header").innerHTML = htmlHeader;
+		},
+	}
 
 // Listening to user keystrokes
 	document.onkeyup = function(e) {
@@ -30,21 +68,17 @@
 			game.gameStatus = true;
 			console.log(game.gameStatus);
 			
-		//Change user command message
-			var htmlCommand = "<span>Guess a letter to solve the puzzle</span>";
-			document.querySelector("#user-command").innerHTML = htmlCommand;
+		//Resets user command message
+			game.resetCommand();
 
 		// Populate remaining guesses area
-			var htmlGuessNum = "<p>Remaining guesses: "+ game.remainingGuesses + "</p>";
-			document.querySelector("#guesses-remaining").innerHTML = htmlGuessNum;
+			game.resetRemainingGuesses();
 
-		// Populate number of wins area		
-			var htmlWinNum = "<p>Number of wins: "+ game.winCount + "</p>";
-			document.querySelector("#wins").innerHTML = htmlWinNum;
+		// Populate number of wins and losses		
+			game.setWinsLosses();
 
 		// Randomly chooses a word from wordsArray
-			game.wordToGuess = game.wordsArray[Math.floor(Math.random() * game.wordsArray.length)];
-			console.log(game.wordToGuess);
+			game.chooseRandGuessWord();
 
 		// Converts chosen word into an array
 			game.wordToGuessArray = Array.from(game.wordToGuess);
@@ -90,17 +124,39 @@
 					else {
 						game.underscoreGuessArray[i] = game.wordToGuessArray[i];
 						}
-					}
-					game.htmlGuessDisplay = game.underscoreGuessArray.join(" ");
-					game.htmlGuessDisplay = "<p>" + game.htmlGuessDisplay + "</p>";
-					document.querySelector("#word-to-guess").innerHTML = game.htmlGuessDisplay;
-					console.log(game.htmlGuessDisplay)
+				}
+				
+				// Update html guess display
+				game.htmlGuessDisplay = game.underscoreGuessArray.join(" ");
+				game.htmlGuessDisplay = "<p>" + game.htmlGuessDisplay + "</p>";
+				document.querySelector("#word-to-guess").innerHTML = game.htmlGuessDisplay;
+				
 
-					}
+				// Check underscoreGuessArray for underscores, if you find none, player has won -- end game and +1 to wins, display to html
+				if (game.underscoreGuessArray.indexOf("_") === -1) {
+					game.gameStatus=false;
+					game.winCount++;
+					var htmlWinNum = "<p>Number of wins: "+ game.winCount + "</p>";
+					document.querySelector("#wins").innerHTML = htmlWinNum;
+					game.youWin();
+					game.playAgainCommand();
+					//game.resetGuesses();
+				}
 
+				// Check number of guesses, if = 0, end game and +1 to losses, display to html
+				else if (game.remainingGuesses == 0) {
+					game.gameStatus=false;
+					game.lossCount++;
+					var htmlLossNum = "<p>Number of losses: "+ game.lossCount + "</p>";
+					document.querySelector("#losses").innerHTML = htmlLossNum;
+					game.youLose();
+					game.playAgainCommand();
+					//game.resetGuesses();
 				}
 			}
 		}
+	}
+}
 	
 
 
