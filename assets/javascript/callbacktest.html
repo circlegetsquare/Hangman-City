@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Hangman Game -- Joshua Miller</title>
+  </head>
+  
+  <body>
+    <div class="container"><h1 id="header">Let's Play Hangman!</h1>
+    <h2 id="user-command"><span>[Hit the spacebar to begin]</span></h2>
+    <div class="game-element" id="wins"><p>Wins go here</p></div>
+    <div class="game-element" id="losses"><p>Losses go here</p></div>
+    <div class="game-element" id="word-to-guess"><p>Current word in play goes here</p></div>
+    <div class="game-element" id="guesses-remaining"><p># guesses remaining goes here</p></div>
+    <div class="game-element" id="letters-guessed"><p>Letters guessed go here</p></div>
+    </div>
+    <script>
+    function do_a( callback ){
+  setTimeout( function(){
+    // simulate a time consuming function
+    console.log( '`do_a`: this takes longer than `do_b`' );
+ 
+    // if callback exist execute it
+    //callback && callback();
+        if(typeof callback == 'undefined' || callback == null)
+            callback()
+        else
+            alert('argh');
+
+  }, 3000 );
+}
+ 
+function do_b(){
+  console.log( '`do_b`: now we can make sure `do_b` comes out after `do_a`' );
+}
+ 
+do_a( function(){
+		do_b();
+		}
+	);
+
+	</script>
+  </body>
+</html>
