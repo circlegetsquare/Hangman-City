@@ -8,14 +8,33 @@
   </head>
   
   <body>
-    <div class="container"><h1 id="header">Let's Play Hangman!</h1>
-    <h2 id="user-command"><span>[Hit the spacebar to begin]</span></h2>
-    <div class="game-element" id="wins"><p></p></div>
-    <div class="game-element" id="losses"><p></p></div>
-    <div class="game-element" id="word-to-guess"><p></p></div>
-    <div class="game-element" id="guesses-remaining"><p></p></div>
-    <div class="game-element" id="letters-guessed"><p></p></div>
-    </div>
+    <div class="container">
+		<h1 class="txtcenter" id="header">HANGMAN</h1>
+		<h2 class="txtcenter" id="user-command"><span>[Hit the spacebar to begin]</span></h2>
+	</div>
+
+    <div class="container bckg-gry">
+		<div class="scoreboard">
+			<div class="scoreboard-element fl-l" id="wins"><p></p></div>
+			<div class="scoreboard-element fl-l" id="losses"><p></p></div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="panel-l fl-l">
+
+			    <div class="game-element" id="letters-guessed"><p></p></div>
+			    <div class="game-element" id="guesses-remaining"><p></p></div>
+
+    	</div>
+
+    	<div class="panel-r fl-r">
+    		<img class="hangman-image" src="assets/images/hangman2.svg">
+			<div class="underscores" id="word-to-guess"><p></p></div>
+		</div>
+
+	</div>
+
     <script src="assets/javascript/game.js"></script>
   </body>
 </html>

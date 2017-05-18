@@ -6,7 +6,7 @@
 }
 
 body {
-	font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+	font-family: 'Helvetica Neue', 'Arial', Helvetica, sans-serif;
 	color: #303030;
 }
 
@@ -16,23 +16,83 @@ h1 {
 }
 
 h2 {
-	font-size: 24px;
+	font-size: 22px;
 	line-height: 36px;
 	margin-bottom: 20px;
 }
 
-p {
-	font-size: 16px;
-	line-height: 32px;
+.bckg-gry {
+	background-color: gray;
 }
+
+.hangman-image {
+	width: 300px;
+	height: auto;
+	margin-left: 200px;
+	margin-top: 10px;
+}
+
+.txtcenter {
+	text-align: center;
+}
+
+.fl-l {
+	float: left;
+}
+
+.fl-r {
+	float: right;
+}
+
+.underscores {
+	font-size: 32px;
+	margin: 20px;
+	text-align: center;
+	letter-spacing: 8px;
+	}
+
+
+.panel-l {
+	width: 30%;
+	border: 1px solid gray;
+	border-right: none;
+	height: 400px;
+}
+
+.panel-r {
+	width: 70%;
+	border: 1px solid gray;
+	height: 400px;
+}
+
+
 
 .container {
 	margin: 0 auto;
-
+	width: 1000px;
 }
+
+
 .game-element {
-	margin: 10px, 20px;
-	border: 1px solid;
-	padding: 10px;
+	margin: 30px 20px;
+	padding: 0px 10px;
+	height: 55px;
+	line-height: 55px;
+	font-size: 16px;
+	border: 1px solid gray;
+}
+
+.scoreboard-element {
+	margin: 0px 20px;
+	height: 55px;
+	line-height: 55px;
+	font-weight: 700px;
+	font-size: 20px;
+}
+
+.scoreboard {
+	width: 1000px;
+	height: 55px;
+	color: white;
 
 }

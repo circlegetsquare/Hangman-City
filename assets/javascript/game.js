@@ -6,7 +6,7 @@
 	var game = {
 		letterGuessArray: [],
 		letterGuessDisplay: "",
-		wordsArray: ["doggie", "cat"],
+		wordsArray: ["DOGS", "CAT"],
 		gameStatus: false,
 		wordToGuess: "",
 		wordToGuessArray: [],
@@ -20,21 +20,31 @@
 	//Resets user command message
 		resetCommand: function(){
 			this.remainingGuesses=8;
+			var htmlCommand = "<span>Guess a letter to solve another puzzle</span>";
+			document.querySelector("#user-command").innerHTML = htmlCommand;
+		},
+
+		setCommand: function(){
+			this.remainingGuesses=8;
 			var htmlCommand = "<span>Guess a letter to solve the puzzle</span>";
 			document.querySelector("#user-command").innerHTML = htmlCommand;
 		},
 
 		resetRemainingGuesses: function (){
 			this.remainingGuesses=8;
-			var htmlGuessNum = "<p>Remaining guesses: "+ this.remainingGuesses + "</p>";
+			var htmlGuessNum = "<p>Guesses Left: "+ this.remainingGuesses + "</p>";
 			document.querySelector("#guesses-remaining").innerHTML = htmlGuessNum;
 		},
 	// Inject number of wins and losses	to html
 		setWinsLosses: function(){
-			var htmlWinNum = "<p>Number of wins: "+ this.winCount + "</p>";
+			var htmlWinNum = "<p>Wins: "+ this.winCount + "</p>";
 			document.querySelector("#wins").innerHTML = htmlWinNum;
-			var htmlLossNum = "<p>Number of losses: "+ this.lossCount + "</p>";
+			var htmlLossNum = "<p>Losses: "+ this.lossCount + "</p>";
 			document.querySelector("#losses").innerHTML = htmlLossNum;
+		},
+
+		setCurrentWordText: function(){
+			document.querySelector("#current-word").innerHTML = "<p></p>";
 		},
 
 		chooseRandGuessWord: function(){
@@ -54,14 +64,10 @@
 			document.querySelector("#word-to-guess").innerHTML = this.htmlGuessDisplay;
 			console.log("displayed underscore!");
 			callback && callback();
-			/*if(typeof callback == 'undefined' || callback == null)
-            callback()
-        else
-            alert('argh');*/
 		},
 		
 		letterGuessesToHTML: function(){
-			var htmlLettersGuessed = "<p>You chose: " + this.letterGuessDisplay + "</p>";
+			var htmlLettersGuessed = "<p>Guesses: " + this.letterGuessDisplay + "</p>";
 			document.querySelector("#letters-guessed").innerHTML = htmlLettersGuessed;
 		},
 
@@ -87,14 +93,14 @@
 
 
 		playAgainCommand: function(){
-			var htmlCommand = "<span>Hit 'S' to play again!</span>";
+			var htmlCommand = "<span>Hit the spacebar to play again!</span>";
 			document.querySelector("#user-command").innerHTML = htmlCommand;
 		},
 
 		gameWin: function(){
 			this.gameStatus=false;
 			this.winCount++;
-			var htmlWinNum = "<p>Number of wins: "+ this.winCount + "</p>";
+			var htmlWinNum = "<p>Wins: "+ this.winCount + "</p>";
 			document.querySelector("#wins").innerHTML = htmlWinNum;
 			this.youWin();
 			var timeoutID = window.setTimeout(20000);
@@ -110,7 +116,7 @@
 		gameLose: function(){
 
 			this.lossCount++;
-			var htmlLossNum = "<p>Number of losses: "+ this.lossCount + "</p>";
+			var htmlLossNum = "<p>Losses: "+ this.lossCount + "</p>";
 			document.querySelector("#losses").innerHTML = htmlLossNum;
 			this.youLose();
 			this.resetGame();
@@ -140,6 +146,7 @@
 			this.letterGuessDisplay = "";
 			this.underscoreGuessArray = [];
 			this.resetRemainingGuesses();
+			this.resetCommand();
 			this.letterGuessesToHTML();
 			this.chooseRandGuessWord();
 			this.guessWordToArrays();
@@ -160,10 +167,10 @@
 			console.log(game.gameStatus);
 		
 		// Initialize game
-
-			game.resetCommand();
-			game.setWinsLosses();
 			game.resetGame();
+			game.setWinsLosses();
+			game.setCommand();
+		}
 
 		/* // Populate remaining guesses area
 			game.resetRemainingGuesses();
@@ -182,12 +189,16 @@
 	// Once game starts, listening to user keystroke; checks against existing values in guessArray
 		
 			document.onkeyup = function(e) {
-				game.userChoice = e.key;
+				game.userChoice = e.key.toUpperCase();
+				//game.userChoice = game.userChoice.toUpperCase();
+				console.log("key: " + game.userChoice);
+
 
 			// If keystroke is isn't already present in guessArray it is added and then parsed to display without commas
 				if (game.letterGuessArray.indexOf(game.userChoice) === -1) {
-				    game.letterGuessArray.push(e.key);
+				    game.letterGuessArray.push(e.key.toUpperCase());
 				    game.letterGuessDisplay = game.letterGuessArray.join(" ");
+				    game.letterGuessDisplay = game.letterGuessDisplay.toUpperCase();
 
 				// Keystroke guesses are injected back into HTML
 				game.letterGuessesToHTML();
@@ -215,7 +226,7 @@
 				}
 			}
 		}
-	}
+	
 
 	
 
