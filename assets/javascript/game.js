@@ -16,30 +16,31 @@
 		htmlGuessDisplay: "",
 		userChoice: "",
 		underscoreGuessArray: [],
+		htmlImage: "",
 
 	//Resets user command message
 		resetCommand: function(){
-			this.remainingGuesses=8;
+			game.remainingGuesses=8;
 			var htmlCommand = "<span>Guess a letter to solve another puzzle</span>";
 			document.querySelector("#user-command").innerHTML = htmlCommand;
 		},
 
 		setCommand: function(){
-			this.remainingGuesses=8;
+			game.remainingGuesses=8;
 			var htmlCommand = "<span>Guess a letter to solve the puzzle</span>";
 			document.querySelector("#user-command").innerHTML = htmlCommand;
 		},
 
-		resetRemainingGuesses: function (){
-			this.remainingGuesses=8;
-			var htmlGuessNum = "<p>Guesses Left: "+ this.remainingGuesses + "</p>";
+		resetRemainingGuesses: function(){
+			game.remainingGuesses=8;
+			var htmlGuessNum = "<p>Guesses Left: "+ game.remainingGuesses + "</p>";
 			document.querySelector("#guesses-remaining").innerHTML = htmlGuessNum;
 		},
 	// Inject number of wins and losses	to html
 		setWinsLosses: function(){
-			var htmlWinNum = "<p>Wins: "+ this.winCount + "</p>";
+			var htmlWinNum = "<p>Wins: "+ game.winCount + "</p>";
 			document.querySelector("#wins").innerHTML = htmlWinNum;
-			var htmlLossNum = "<p>Losses: "+ this.lossCount + "</p>";
+			var htmlLossNum = "<p>Losses: "+ game.lossCount + "</p>";
 			document.querySelector("#losses").innerHTML = htmlLossNum;
 		},
 
@@ -48,34 +49,37 @@
 		},
 
 		chooseRandGuessWord: function(){
-			this.wordToGuess = this.wordsArray[Math.floor(Math.random() * this.wordsArray.length)];
-			console.log(this.wordToGuess);
+			game.wordToGuess = game.wordsArray[Math.floor(Math.random() * game.wordsArray.length)];
+			console.log(game.wordToGuess);
 		},
 
 		guessWordToArrays: function(){
-			this.wordToGuessArray = Array.from(this.wordToGuess);
-			for (var i = 0; i < this.wordToGuessArray.length; i++)
-				this.underscoreGuessArray[i] = "_";
+			game.wordToGuessArray = Array.from(game.wordToGuess);
+			for (var i = 0; i < game.wordToGuessArray.length; i++)
+				game.underscoreGuessArray[i] = "_";
 		},
 
 		displayUnderscoreArray: function(callback) {
-			this.htmlGuessDisplay = this.underscoreGuessArray.join(" ");
-			this.htmlGuessDisplay = "<p>" + this.htmlGuessDisplay + "</p>";
-			document.querySelector("#word-to-guess").innerHTML = this.htmlGuessDisplay;
+			game.htmlGuessDisplay = game.underscoreGuessArray.join(" ");
+			game.htmlGuessDisplay = "<p>" + game.htmlGuessDisplay + "</p>";
+			document.querySelector("#word-to-guess").innerHTML = game.htmlGuessDisplay;
 			console.log("displayed underscore!");
 			callback && callback();
 		},
 		
 		letterGuessesToHTML: function(){
-			var htmlLettersGuessed = "<p>Guesses: " + this.letterGuessDisplay + "</p>";
+			var htmlLettersGuessed = "<p>Guesses: " + game.letterGuessDisplay + "</p>";
 			document.querySelector("#letters-guessed").innerHTML = htmlLettersGuessed;
 		},
 
 		checkKeyAgainstWord: function(){
-			if (this.wordToGuessArray.indexOf(this.userChoice) === -1) {
-				this.remainingGuesses--;
-				var htmlGuessNum = "<p>Remaining guesses: "+ this.remainingGuesses + "</p>";
+			if (game.wordToGuessArray.indexOf(game.userChoice) === -1) {
+				game.remainingGuesses--;
+				var htmlImage = '<img src="assets/images/hangman-' + game.remainingGuesses + '.svg">';
+				document.querySelector("#hang-image-container").innerHTML = htmlImage;
+				var htmlGuessNum = "<p>Remaining guesses: "+ game.remainingGuesses + "</p>";
 				document.querySelector("#guesses-remaining").innerHTML = htmlGuessNum;
+
 				}
 		},
 
@@ -91,66 +95,54 @@
 		},
 
 
-
-		playAgainCommand: function(){
-			var htmlCommand = "<span>Hit the spacebar to play again!</span>";
-			document.querySelector("#user-command").innerHTML = htmlCommand;
-		},
-
-		gameWin: function(){
-			this.gameStatus=false;
-			this.winCount++;
-			var htmlWinNum = "<p>Wins: "+ this.winCount + "</p>";
-			document.querySelector("#wins").innerHTML = htmlWinNum;
-			this.youWin();
-			var timeoutID = window.setTimeout(20000);
-			this.resetGame();
-		},
-
-		youWin: function(){
-			var htmlHeader = "<span>You Win!</span>";
-			document.querySelector("#header").innerHTML = htmlHeader;
-			window.alert("You win! Play again?");
-		},
-
-		gameLose: function(){
-
-			this.lossCount++;
-			var htmlLossNum = "<p>Losses: "+ this.lossCount + "</p>";
-			document.querySelector("#losses").innerHTML = htmlLossNum;
-			this.youLose();
-			this.resetGame();
-		},
-
-		youLose: function(){
-			var htmlHeader = "<span>You Lose!</span>";
-			document.querySelector("#header").innerHTML = htmlHeader;
-			window.alert("Ouch - you lost. Try again?");
-		},
-
 		checkForWinLoss: function(){
-			if (this.underscoreGuessArray.indexOf("_") === -1) {
-			this.gameWin();
+			if (game.underscoreGuessArray.indexOf("_") === -1) {
+			game.gameWin();
 			}
 
-			else if (this.remainingGuesses == 0) {
-			this.gameLose();
+			else if (game.remainingGuesses == 0) {
+			game.gameLose();
 			};
 
 		},
 
+		gameWin: function(){
+			game.winCount++;
+			var htmlWinNum = "<p>Wins: "+ game.winCount + "</p>";
+			document.querySelector("#wins").innerHTML = htmlWinNum;
+			setTimeout(game.youWin, 100);
+		},
+
+		gameLose: function(){ 
+			game.lossCount++;
+			var htmlLossNum = "<p>Losses: "+ game.lossCount + "</p>";
+			document.querySelector("#losses").innerHTML = htmlLossNum;
+			setTimeout(game.youLose, 300)
+		},
+
+		youWin: function(){
+			window.alert("You win! Play again?");
+			game.resetGame();
+		},
+
+		youLose: function(){
+			window.alert("Ouch - you lost. Try again?");
+			game.resetGame();
+		},
+
+
 	//Resets Game
 		resetGame: function() {
-			this.playAgainCommand;
-			this.letterGuessArray = [];
-			this.letterGuessDisplay = "";
-			this.underscoreGuessArray = [];
-			this.resetRemainingGuesses();
-			this.resetCommand();
-			this.letterGuessesToHTML();
-			this.chooseRandGuessWord();
-			this.guessWordToArrays();
-			this.displayUnderscoreArray();
+			game.playAgainCommand;
+			game.letterGuessArray = [];
+			game.letterGuessDisplay = "";
+			game.underscoreGuessArray = [];
+			game.resetRemainingGuesses();
+			game.resetCommand();
+			game.letterGuessesToHTML();
+			game.chooseRandGuessWord();
+			game.guessWordToArrays();
+			game.displayUnderscoreArray();
 		},
 	}
 	
@@ -163,8 +155,6 @@
 
 	// Game starts if user hits spacebar
 		if (game.userChoice === 32) {
-			game.gameStatus = true;
-			console.log(game.gameStatus);
 		
 		// Initialize game
 			game.resetGame();
