@@ -54,7 +54,7 @@ script.type = 'text/javascript';
 
 		chooseRandGuessWord: function(){
 			game.wordToGuess = game.wordsArray[Math.floor(Math.random() * game.wordsArray.length)];
-			console.log(game.wordToGuess);
+			//console.log(game.wordToGuess);
 		},
 
 		guessWordToArrays: function(){
@@ -76,7 +76,7 @@ script.type = 'text/javascript';
 		},
 		
 		letterGuessesToHTML: function(){
-			var htmlLettersGuessed = "<p><strong>LETTERS GUESSED:</strong></p><hr><p> " + game.letterGuessDisplay + "</p>";
+			var htmlLettersGuessed = "<p><strong>LETTERS GUESSED</strong></p><hr><p> " + game.letterGuessDisplay + "</p>";
 			document.querySelector("#letters-guessed").innerHTML = htmlLettersGuessed;
 		},
 
@@ -165,7 +165,7 @@ script.type = 'text/javascript';
 // Listening to user keystrokes
 	document.onkeyup = function(e) {
 		game.userChoice = e.keyCode;
-		console.log(game.userChoice);
+		//console.log(game.userChoice);
 
 	// Game starts if user hits spacebar
 		if (game.userChoice === 32) {
@@ -196,7 +196,7 @@ script.type = 'text/javascript';
 				game.userChoice = e.key.toUpperCase();
 				game.keyCheck = e.keyCode;
 				//game.userChoice = game.userChoice.toUpperCase();
-				console.log("key: " + game.userChoice);
+				//console.log("key: " + game.userChoice);
 
 			if (game.keyCheck >= 65 && game.keyCheck<= 90) {
 
