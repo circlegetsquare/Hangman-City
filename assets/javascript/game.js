@@ -1,13 +1,14 @@
+var script = document.createElement('script');
+script.src = 'https://code.jquery.com/jquery-2.2.0.min.js';
+script.type = 'text/javascript';
 
-
-
+//$(document).ready(function() {
 // Game Object
 
 	var game = {
 		letterGuessArray: [],
 		letterGuessDisplay: "",
-		wordsArray: ["DOGS", "CAT"],
-		gameStatus: false,
+		wordsArray: ["JOHANNESBURG", "MUMBAI", "JAKARTA", "RIO DE JANEIRO", "NEW DELHI", "BOGOTA", "KUALA LUMPUR", "TEL AVIV", "BOSTON", "DUBAI", "MILAN", "MIAMI", "CAIRO", "BUENOS AIRES", "MUNICH", "SAO PAULO", "TAIPEI", "MOSCOW", "MEXICO CITY", "ZURICH", "SHANGHAI", "BANGKOK", "SAN FRANCISCO", "SYDNEY", "FRANKFURT", "HONG KONG", "SEOUL", "WASHINGTON DC", "TORONTO", "BEIJING", "BERLIN", "SINGAPORE", "BRUSSELS", "LOS ANGELES", "TOKYO", "PARIS", "LONDON", "NEW YORK", "BARCELONA", "INSTANBUL"],
 		wordToGuess: "",
 		wordToGuessArray: [],
 		winCount: 0,
@@ -15,25 +16,28 @@
 		remainingGuesses: 0,
 		htmlGuessDisplay: "",
 		userChoice: "",
+		keyCheck: null,
 		underscoreGuessArray: [],
 		htmlImage: "",
 
 	//Resets user command message
-		resetCommand: function(){
+		setCommand: function(){
 			game.remainingGuesses=8;
-			var htmlCommand = "<span>Guess a letter to solve another puzzle</span>";
+			//var htmlCommand = "<span>Guess a letter to solve the puzzle.</span>";
+			var htmlCommand = "";
 			document.querySelector("#user-command").innerHTML = htmlCommand;
 		},
 
-		setCommand: function(){
+		resetCommand: function(){
 			game.remainingGuesses=8;
-			var htmlCommand = "<span>Guess a letter to solve the puzzle</span>";
+			//var htmlCommand = "<span>Guess a letter to solve another puzzle.</span>";
+			var htmlCommand = "";
 			document.querySelector("#user-command").innerHTML = htmlCommand;
 		},
 
 		resetRemainingGuesses: function(){
 			game.remainingGuesses=8;
-			var htmlGuessNum = "<p>Guesses Left: "+ game.remainingGuesses + "</p>";
+			var htmlGuessNum = "<p>GUESSES LEFT: "+ game.remainingGuesses + "</p>";
 			document.querySelector("#guesses-remaining").innerHTML = htmlGuessNum;
 		},
 	// Inject number of wins and losses	to html
@@ -56,28 +60,32 @@
 		guessWordToArrays: function(){
 			game.wordToGuessArray = Array.from(game.wordToGuess);
 			for (var i = 0; i < game.wordToGuessArray.length; i++)
-				game.underscoreGuessArray[i] = "_";
-		},
+				if (game.wordToGuessArray[i] === " ") {
+					game.underscoreGuessArray[i] = "&nbsp";
+					}
+					else {
+					game.underscoreGuessArray[i] = "_";
+					}
+			},
 
 		displayUnderscoreArray: function(callback) {
 			game.htmlGuessDisplay = game.underscoreGuessArray.join(" ");
 			game.htmlGuessDisplay = "<p>" + game.htmlGuessDisplay + "</p>";
 			document.querySelector("#word-to-guess").innerHTML = game.htmlGuessDisplay;
-			console.log("displayed underscore!");
 			callback && callback();
 		},
 		
 		letterGuessesToHTML: function(){
-			var htmlLettersGuessed = "<p>Guesses: " + game.letterGuessDisplay + "</p>";
+			var htmlLettersGuessed = "<p><strong>LETTERS GUESSED:</strong></p><hr><p> " + game.letterGuessDisplay + "</p>";
 			document.querySelector("#letters-guessed").innerHTML = htmlLettersGuessed;
 		},
 
 		checkKeyAgainstWord: function(){
-			if (game.wordToGuessArray.indexOf(game.userChoice) === -1) {
+			if (game.wordToGuessArray.indexOf(game.userChoice) === -1 ) {
 				game.remainingGuesses--;
-				var htmlImage = '<img src="assets/images/hangman-' + game.remainingGuesses + '.svg">';
-				document.querySelector("#hang-image-container").innerHTML = htmlImage;
-				var htmlGuessNum = "<p>Remaining guesses: "+ game.remainingGuesses + "</p>";
+				var htmlImage = 'assets/images/hangman-' + game.remainingGuesses + '.svg';
+				$('#hang-image').attr('src', htmlImage);
+				var htmlGuessNum = "<p>GUESSES LEFT: "+ game.remainingGuesses + "</p>";
 				document.querySelector("#guesses-remaining").innerHTML = htmlGuessNum;
 
 				}
@@ -85,7 +93,10 @@
 
 		underscoreToLetter: function(){
 			for (var i = 0; i < game.wordToGuessArray.length; i++) {
-				if (game.letterGuessArray.indexOf(game.wordToGuessArray[i]) === -1) {
+				if (game.wordToGuessArray[i] === " ") {
+				game.underscoreGuessArray[i] = "&nbsp";
+				}
+				else if (game.letterGuessArray.indexOf(game.wordToGuessArray[i]) === -1) {
 				game.underscoreGuessArray[i] = "_";
 				}
 				else {
@@ -111,6 +122,7 @@
 			var htmlWinNum = "<p>Wins: "+ game.winCount + "</p>";
 			document.querySelector("#wins").innerHTML = htmlWinNum;
 			setTimeout(game.youWin, 100);
+			//game.youWin();
 		},
 
 		gameLose: function(){ 
@@ -143,8 +155,10 @@
 			game.chooseRandGuessWord();
 			game.guessWordToArrays();
 			game.displayUnderscoreArray();
+			var htmlImage = 'assets/images/hangman-8.svg';
+			$('#hang-image').attr('src', htmlImage);
 		},
-	}
+	};
 	
 
 
@@ -160,7 +174,7 @@
 			game.resetGame();
 			game.setWinsLosses();
 			game.setCommand();
-		}
+		
 
 		/* // Populate remaining guesses area
 			game.resetRemainingGuesses();
@@ -180,12 +194,14 @@
 		
 			document.onkeyup = function(e) {
 				game.userChoice = e.key.toUpperCase();
+				game.keyCheck = e.keyCode;
 				//game.userChoice = game.userChoice.toUpperCase();
 				console.log("key: " + game.userChoice);
 
+			if (game.keyCheck >= 65 && game.keyCheck<= 90) {
 
-			// If keystroke is isn't already present in guessArray it is added and then parsed to display without commas
-				if (game.letterGuessArray.indexOf(game.userChoice) === -1) {
+			// If keystroke is isn't already present in guessArray and there are guesses left, it is added and then parsed to display without commas
+				if (game.letterGuessArray.indexOf(game.userChoice) === -1 && game.remainingGuesses > 0) {
 				    game.letterGuessArray.push(e.key.toUpperCase());
 				    game.letterGuessDisplay = game.letterGuessArray.join(" ");
 				    game.letterGuessDisplay = game.letterGuessDisplay.toUpperCase();
@@ -216,6 +232,9 @@
 				}
 			}
 		}
+	}
+};
+	//});
 	
 
 	
